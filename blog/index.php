@@ -1,4 +1,5 @@
 <?php
+    require '../connect.php';
     session_start();
     if (isset($_SESSION['status'])) {
         $status = $_SESSION['status'];
@@ -6,7 +7,7 @@
         $status = false;
     }
 
-    $sql = 'SELECT blogs.id, blogs.title, blog.content, users.name FROM blogs INNER JOIN users ON blogs.user_id = users_id';
+    $sql = "SELECT blogs.id, blogs.title, blogs.content, blogs.image , users.name, users.email FROM blogs INNER JOIN users ON blogs.user_id = users.id ORDER BY blogs.created_at DESC";
 	$result = $conn->query($sql);
 ?>
 
@@ -29,10 +30,10 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="/tcs_lesson/day-14/">Home <span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="/tcs_lesson/day-14/blog">Blog</a>
                     </li>
                     <li>
@@ -60,19 +61,33 @@
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container mt-5">
         <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <img class="card-img-top" src="/thumbnail/<?php $row['image'] ?>" alt="Card image cap">
-                <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="/blog/show.php" class="btn btn-primary">Read More</a>
+                <?php
+                while ($row = $result->fetch_assoc()) { ?>
+                <div class="col-md-4">
+                    <div class="card">
+                        <?php
+                        if ($row['image'] == NULL || $row['image'] == '') { ?>
+                        <img src="https://via.placeholder.com/600x300.png?text=Image" class="card-img-top" alt="...">
+                        <?php
+                        } else { ?> 
+                            <img src="/thumbnail/ <?php echo $row['image'] ?>" class="card-img-top" alt="...">
+                        <?php
+                        }
+                        ?>
+                        <div class="card-body">
+                        <h5 class="card-title"><?php echo $row['title'] ?> </h5>
+                        <p class="card-text"><?php echo substr($row['content'], 0, 40) ?>...</p>
+                        <a href="/tcs_lesson/day-14/blog/show.php?id=<?php echo $row['id'] ?>" class="btn btn-primary">Read More</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+                <?php
+                }
+                ?>
         </div>
     </div>
+
 </body>
 </html>

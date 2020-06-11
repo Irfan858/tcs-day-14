@@ -8,7 +8,7 @@
         header('Location: /tcs_lesson/day-14/login.php');
 	}
 	
-	$sql = 'SELECT blogs.id, blogs.title, blog.content, users.name FROM blogs INNER JOIN users ON blogs.user_id = users_id';
+	$sql = "SELECT blogs.id, blogs.title, blogs.content, users.name, users.email FROM blogs INNER JOIN users ON blogs.user_id = users.id";
 	$result = $conn->query($sql);
 ?>
 
@@ -32,13 +32,13 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="/tcs_lesson/day-14/">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/tcs_lesson/day-14/blog">Blog</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="/tcs_lesson/day-14/admin">Admin</a>
                     </li>
                 </ul>
@@ -83,7 +83,10 @@
 					while ($row = $result->fetch_assoc()) { ?>
 							<tr>
 								<th scope="row"><?php echo $row['id'] ?></th>
-								<td><?php echo $row['user_id'] ?></td>
+								<td>
+                                    <?php echo $row['name'] ?> <br>
+                                    <?php echo $row['email'] ?>
+                                </td>
 								<td><?php echo $row['title'] ?></td>
 								<td><?php echo substr($row['content'], 0, 20) ?>...</td>
 								<td>

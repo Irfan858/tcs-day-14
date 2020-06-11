@@ -14,6 +14,7 @@ $rowUser = $resultGetUser->fetch_assoc();
 $userId = $rowUser['id'];
 
 
+
 if ($_POST) {
     $image = NULL;
     $title = $_POST['title'];

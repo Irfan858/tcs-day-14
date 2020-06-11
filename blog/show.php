@@ -1,10 +1,10 @@
 <?php
     require '../connect.php';
-
     session_start();
+
     if (isset($_SESSION['status'])) {
         $status = $_SESSION['status'];
-    }else {
+    } else {
         $status = false;
     }
 
@@ -13,6 +13,7 @@
     $hasil = $conn->query($sql);
     $blog = $hasil->fetch_assoc();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +24,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
         <div class="container">
             <a class="navbar-brand" href="#">Blog Gua</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,10 +36,10 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/tcs_lesson/day-14/">Home <span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="/tcs_lesson/day-14/blog">Blog</a>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="/tcs_lesson/day-14/admin">Admin</a>
                     </li>
                 </ul>
@@ -64,26 +65,29 @@
         </div>
     </nav>
 
-    <section class="py-5">
-        <div class="container">
-			<form action="../backend/back-edit-blog.php" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="id" value="<?php echo $id ?>">
-                <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" name="title" class="form-control" id="title" placeholder="Judul Blog" required value ="<?php echo $blog['title'] ?>">
-                </div>
-                <div class="form-group">
-                    <label for="content">Content</label>
-                    <textarea name="content" id="content" class="form-control" rows="5" placeholder="Isi konten" required><?php echo $blog['content'] ?> </textarea>
-                </div>
-                <div class="form-group">
-                    <label for="image">Image</label>
-                    <input type="file" name="image" class="form-control" id="image" placeholder="Judul Blog">
-                </div>
-
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header font-weight-bold">
+                        <?php echo $blog['title'] ?>
+                        </div>
+                        <div class="card-body">
+                        <div class="card-img-top">
+                        <?php
+                        if ($blog['image'] == NULL || $blog['image'] == '') { ?>
+                        <img src="https://via.placeholder.com/600x300.png?text=Image" class="card-img-top" alt="...">
+                        <?php
+                        } else { ?> 
+                            <img src="/thumbnail/ <?php echo $blog['image'] ?>" class="card-img-top" alt="...">
+                        <?php
+                        }
+                        ?>
+                        </div>
+                        <?php echo $blog['content'] ?>
+                        </div>
+                    </div>
+            </div>
         </div>
-    </section>
-</body>
-</html>
+    </div>
+

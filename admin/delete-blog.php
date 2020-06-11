@@ -6,7 +6,7 @@ $sql = "DELETE FROM blogs WHERE id = '$id' ";
 $hasil = $conn->query($sql);
 
 if ($hasil) {
-    header('location : ../admin/index.php');
+    header('location : /tcs_lesson/day-14/admin/index.php');
 } else {
     echo "gagal emnghapus : ". $conn->error;
 }
